@@ -1,0 +1,192 @@
+{
+  "database": "EcommifyDB",
+  "commands": [
+    {
+      "createIndexes": "products",
+      "indexes": [
+        {
+          "key": {
+            "category": 1,
+            "price": 1
+          },
+          "name": "idx_products_category_price",
+          "background": true
+        },
+        {
+          "key": {
+            "category": 1,
+            "metrics.average_rating": -1,
+            "metrics.total_units_sold": -1
+          },
+          "name": "idx_products_category_rating_units",
+          "background": true
+        },
+        {
+          "key": {
+            "price": 1,
+            "metrics.average_rating": -1
+          },
+          "name": "idx_products_price_rating_partial",
+          "background": true,
+          "partialFilterExpression": {
+            "price": {
+              "$exists": true,
+              "$gt": 0
+            },
+            "metrics.average_rating": {
+              "$exists": true
+            }
+          }
+        },
+        {
+          "key": {
+            "metrics.total_units_sold": -1
+          },
+          "name": "idx_products_units_sold_partial",
+          "background": true,
+          "partialFilterExpression": {
+            "metrics.total_units_sold": {
+              "$exists": true,
+              "$gt": 0
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "text",
+            "category": "text"
+          },
+          "name": "idx_products_text_name_category",
+          "background": true,
+          "partialFilterExpression": {
+            "name": {
+              "$exists": true,
+              "$type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "createIndexes": "reviews",
+      "indexes": [
+        {
+          "key": {
+            "product_id": 1,
+            "review_creation_date": -1
+          },
+          "name": "idx_reviews_product_date",
+          "background": true
+        },
+        {
+          "key": {
+            "product_id": 1,
+            "review_score": -1
+          },
+          "name": "idx_reviews_product_score",
+          "background": true
+        },
+        {
+          "key": {
+            "customer_id": 1,
+            "review_creation_date": -1
+          },
+          "name": "idx_reviews_customer_date",
+          "background": true
+        },
+        {
+          "key": {
+            "order_id": 1,
+            "review_creation_date": -1
+          },
+          "name": "idx_reviews_order_date",
+          "background": true
+        },
+        {
+          "key": {
+            "review_score": 1,
+            "review_creation_date": -1
+          },
+          "name": "idx_reviews_low_score_recent_partial",
+          "background": true,
+          "partialFilterExpression": {
+            "review_score": {
+              "$lte": 2
+            },
+            "review_comment_message": {
+              "$exists": true,
+              "$type": "string"
+            }
+          }
+        },
+        {
+          "key": {
+            "review_comment_title": "text",
+            "review_comment_message": "text"
+          },
+          "name": "idx_reviews_text_comments",
+          "background": true,
+          "partialFilterExpression": {
+            "review_comment_message": {
+              "$exists": true,
+              "$type": "string"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "createIndexes": "sample_products",
+      "indexes": [
+        {
+          "key": {
+            "category": 1,
+            "price": 1
+          },
+          "name": "idx_sample_products_category_price",
+          "background": true
+        },
+        {
+          "key": {
+            "category": 1,
+            "average_rating": -1,
+            "total_units_sold": -1
+          },
+          "name": "idx_sample_products_category_rating_units",
+          "background": true
+        },
+        {
+          "key": {
+            "price": 1,
+            "average_rating": -1
+          },
+          "name": "idx_sample_products_price_rating_partial",
+          "background": true,
+          "partialFilterExpression": {
+            "price": {
+              "$exists": true,
+              "$gt": 0
+            },
+            "average_rating": {
+              "$exists": true
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "text",
+            "category": "text"
+          },
+          "name": "idx_sample_products_text_name_category",
+          "background": true,
+          "partialFilterExpression": {
+            "name": {
+              "$exists": true,
+              "$type": "string"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
